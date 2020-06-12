@@ -30,6 +30,24 @@ class GoodsCategory(models.Model):
     def __str__(self):
         return self.name
 
+class GoodsCategoryBrand(models.Model):
+    """
+    某一大类下的宣传商标
+    """
+    category = models.ForeignKey(GoodsCategory, on_delete=models.CASCADE, related_name='brands', null=True, blank=True, verbose_name="商品类目")
+    name = models.CharField(default="", max_length=30, verbose_name="品牌名", help_text="品牌名")
+    desc = models.TextField(default="", max_length=200, verbose_name="品牌描述", help_text="品牌描述")
+    image = models.ImageField(max_length=200, upload_to="brands/")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
+
+    class Meta:
+        verbose_name = "宣传品牌"
+        verbose_name_plural = verbose_name
+        db_table = "goods_goodsbrand"
+
+    def __str__(self):
+        return self.name
+
 
 """ 商品设计 """
 
@@ -46,7 +64,7 @@ class Goods(models.Model):
     shop_price = models.FloatField("本店价格", default=0)
     goods_brief = models.TextField("商品简短描述", default=0)
     goods_desc = UEditorField(verbose_name=u"内容", imagePath="goods/images/", width=1000, height=300,
-                              toolbars="full",filePath="goods/files/",
+                              toolbars="full", filePath="goods/files/",
                               upload_settings={"imageMaxSize": 1204000},
                               settings={}, default='')
     ship_free = models.BooleanField("是否包邮", default=True)
@@ -86,6 +104,20 @@ class Banner(models.Model):
 
     class Meta:
         verbose_name = '首页轮播'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.goods.name
+
+class IndexAd(models.Model):
+    """
+    首页类别标签右边展示的七个商品广告
+    """
+    category = models.ForeignKey(GoodsCategory, on_delete=models.CASCADE, related_name='category',verbose_name="商品类目")
+    goods =models.ForeignKey(Goods, on_delete=models.CASCADE, related_name='goods')
+
+    class Meta:
+        verbose_name = '首页广告'
         verbose_name_plural = verbose_name
 
     def __str__(self):

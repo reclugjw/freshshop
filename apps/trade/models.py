@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime
 from goods.models import Goods
+from users.models import UserProfile
 """ 用来去setting找AUTH_USER_MODEL"""
 from django.contrib.auth import get_user_model
 # Create your models here.
