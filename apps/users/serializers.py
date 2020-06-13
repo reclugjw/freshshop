@@ -1,11 +1,11 @@
 # encoding: utf-8
 from rest_framework.validators import UniqueValidator
 
-__author__ = 'mtianyan'
-__date__ = '2018/3/8 0008 09:41'
+
 import re
+from .models import Goods
 from datetime import datetime, timedelta
-from VueDjangoFrameWorkShop.settings import REGEX_MOBILE
+from MxShop.settings import REGEX_MOBILE
 from users.models import VerifyCode
 from rest_framework import serializers
 from django.contrib.auth import get_user_model

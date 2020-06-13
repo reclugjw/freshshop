@@ -1,11 +1,21 @@
 # encoding: utf-8
 from goods.models import Goods
+import json
 
-__author__ = 'mtianyan'
-__date__ = '2018/2/14 0014 15:15'
 
-from django.views.generic.base import View
+from django.views.generic import View
+#from django.views.generic.base import View
 
+from datetime import date, datetime
+
+class ComplexEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, date):
+            return obj.strftime('%Y-%m-%d')
+        else:
+            return json.JSONEncoder.default(self, obj)
 
 class GoodsListView(View):
     def get(self, request):
@@ -13,35 +23,35 @@ class GoodsListView(View):
         通过django的view实现商品列表页
         """
         json_list = []
-        goods = Goods.objects.all()[:10]
+        goods = Goods.objects.all()
 
-        # for good in goods:
-        #     json_dict = {}
-        #     json_dict["name"] = good.name
-        #     json_dict["category"] = good.category.name
-        #     json_dict["market_price"] = good.market_price
-        #     json_dict["add_time"] = good.add_time
-        #     json_list.append(json_dict)
-
-        # from django.http import HttpResponse
-        # import json
-        # return HttpResponse(json.dumps(json_list),content_type="application/json")
-
-        from django.forms.models import model_to_dict
         for good in goods:
-            json_dict = model_to_dict(good)
+            json_dict = {}
+            json_dict["name"] = good.name
+            json_dict["category"] = good.category.name
+            json_dict["market_price"] = good.market_price
+            json_dict["add_time"] = good.add_time
             json_list.append(json_dict)
 
+        from django.http import HttpResponse
         import json
-        from django.core import serializers
-        json_data = serializers.serialize('json', goods)
-        json_data = json.loads(json_data)
-        from django.http import HttpResponse, JsonResponse
-        # jsonResponse做的工作也就是加上了dumps和content_type
-        # return HttpResponse(json.dumps(json_data), content_type="application/json")
-        # 注释掉loads，下面语句正常
-        # return HttpResponse(json_data, content_type="application/json")
-        return JsonResponse(json_data, safe=False)
+        return HttpResponse(json.dumps((json_list),cls=ComplexEncoder),content_type="application/json")
+
+        # from django.forms.models import model_to_dict
+        # for good in goods:
+        #     json_dict = model_to_dict(good)
+        #     json_list.append(json_dict)
+
+        # import json
+        # from django.core import serializers
+        # json_data = serializers.serialize('json', goods)
+        # json_data = json.loads(json_data)
+        # from django.http import HttpResponse, JsonResponse
+        # # jsonResponse做的工作也就是加上了dumps和content_type
+        # # return HttpResponse(json.dumps(json_data), content_type="application/json")
+        # # 注释掉loads，下面语句正常
+        # # return HttpResponse(json_data, content_type="application/json")
+        # return JsonResponse(json_data, safe=False)
 
 
 

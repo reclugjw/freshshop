@@ -12,7 +12,7 @@ class UserProfile(AbstractUser):
     }
     """ 手机注册 注册表"""
     name = models.CharField("姓名", max_length=35, null=True, blank=True)
-    gender = models.CharField("性别", max_length=5, choices=GENDER_CHOICE, default="female")
+    gender = models.CharField("性别", max_length=100, choices=GENDER_CHOICE, default="female")
     birthday = models.DateField("出生年月", null=True, blank=True)
     email = models.EmailField("邮箱", max_length=100, null=True, blank=True)
     mobile = models.CharField("手机号", max_length=11)

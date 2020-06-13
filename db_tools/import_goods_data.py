@@ -1,14 +1,21 @@
 # encoding: utf-8
 
+# import sys
+# import os
+
+
+# #pwd = os.path.dirname(os.path.realpath(__file__))
+# pwd= "F:\\project-pycharm\\MxShop"
+# sys.path.append(pwd+"../")
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MxShop.settings")
+
+# import django
+# django.setup()
 import sys
-import os
-
-
-pwd = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(pwd+"../")
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "VueDjangoFrameWorkShop.settings")
-
 import django
+sys.path.extend(['F:\\project-pycharm\\MxShop'])
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'MxShop.settings'
 django.setup()
 
 from goods.models import Goods, GoodsCategory, GoodsImage

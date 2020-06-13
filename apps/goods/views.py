@@ -77,15 +77,15 @@ class GoodsListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     #     if price_min:
     #         self.queryset = Goods.objects.filter(shop_price__gt=int(price_min)).order_by('-add_time')
     #     return self.queryset
-# class GoodsListView(APIView):
-#     """
-#     列出所有商品
-#     """
-#     def get(self, request, format=None):
-#         goods = Goods.objects.all()[:10]
-#         # 因为前面的是一个列表，加many=True
-#         goods_json = GoodsSerializer(goods, many=True)
-#         return Response(goods_json.data)
+class GoodsListView(APIView):
+    """
+    列出所有商品
+    """
+    def get(self, request, format=None):
+        goods = Goods.objects.all()[:10]
+        # 因为前面的是一个列表，加many=True
+        goods_json = GoodsSerializer(goods, many=True)
+        return Response(goods_json.data)
 
     # def post(self, request, format=None):
     #     serializer = GoodsSerializer(data=request.data)
@@ -95,14 +95,14 @@ class GoodsListViewSet(CacheResponseMixin, mixins.ListModelMixin, mixins.Retriev
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # 商品点击数+1
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.click_num += 1
-        instance.save()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     instance.click_num += 1
+    #     instance.save()
+    #     serializer = self.get_serializer(instance)
+    #     return Response(serializer.data)
 
-class CategoryViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class CategoryViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     """
     list:
         商品分类列表数据
@@ -113,7 +113,7 @@ class CategoryViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
     serializer_class = CategorySerializer
 
 
-class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+class BannerViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     获取轮播图列表
     """
@@ -121,7 +121,7 @@ class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = BannerSerializer
 
 
-class IndexCategoryViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+class IndexCategoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     首页商品分类数据
     """
@@ -129,7 +129,7 @@ class IndexCategoryViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = IndexCategorySerializer
 
 
-class HotSearchsViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+class HotSearchsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     获取热搜词列表
     """
